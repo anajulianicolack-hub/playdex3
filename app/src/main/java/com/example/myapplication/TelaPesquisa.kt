@@ -27,19 +27,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
 @Preview
 @Composable
-fun TelaPesquisa(){
+fun TelaPesquisar() {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF170C27))
     ) {
 
-        // ===============================
         // TOPO
-        // ===============================
 
         Row(
             modifier = Modifier
@@ -51,13 +49,14 @@ fun TelaPesquisa(){
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
             // SETA PARA VOLTAR
 
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Voltar",
                 tint = Color.White,
-                modifier = Modifier.width(30.dp)
+                modifier = Modifier.size(30.dp)
             )
 
             Spacer(
@@ -65,21 +64,17 @@ fun TelaPesquisa(){
             )
 
             // BARRA DE PESQUISA
+
             Row(
                 modifier = Modifier
                     .weight(1f)
                     .height(34.dp)
-                    .clip(
-                        RoundedCornerShape(20.dp)
-                    )
-                    .background(
-                        Color(0xFF0D0716)
-                    )
-                    .padding(
-                        horizontal = 10.dp
-                    ),
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color(0xFF0D0716))
+                    .padding(horizontal = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = "Pesquisar",
@@ -96,73 +91,71 @@ fun TelaPesquisa(){
                     color = Color(0xFFB8B0C4),
                     fontSize = 12.sp
                 )
-
-                Spacer(
-                    modifier = Modifier.width(8.dp)
-                )
-
-                // PROCURAR
-                Text(
-                    text = "Procurar",
-                    color = Color(0xFFB83CFF),
-                    fontSize = 12.sp
-                )
             }
 
             Spacer(
-                modifier = Modifier.height(24.dp)
+                modifier = Modifier.width(8.dp)
             )
 
-            // ===========================
-            // HISTÓRICO
-            // ===========================
+            // PROCURAR
 
-            ItemHistorico(
-                nome = "Stardew Valley"
+            Text(
+                text = "Procurar",
+                color = Color(0xFFB83CFF),
+                fontSize = 12.sp
             )
-
-            ItemHistorico(
-                nome = "Cuphead"
-            )
-
-            ItemHistorico(
-                nome = "Deltarune"
-            )
-
-            ItemHistorico(
-                nome = "GTA VI"
-            )
-
-
-            Spacer(
-                modifier = Modifier.height(25.dp)
-            )
-
-            // ===========================
-            // VER MAIS
-            // ===========================
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Ver mais",
-                    color = Color.White,
-                    fontSize = 13.sp
-                )
-
-                Text(
-                    text = "⌄",
-                    color = Color.White,
-                    fontSize = 18.sp
-                )
-
-            }
-
         }
 
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
+
+        // HISTÓRICO DE PESQUISAS
+
+        ItemHistorico(
+            nome = "Stardew Valley"
+        )
+
+        ItemHistorico(
+            nome = "Cuphead"
+        )
+
+        ItemHistorico(
+            nome = "Deltarune"
+        )
+
+        ItemHistorico(
+            nome = "GTA VI"
+        )
+
+        Spacer(
+            modifier = Modifier.height(25.dp)
+        )
+
+        // VER MAIS
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Text(
+                text = "Ver mais",
+                color = Color.White,
+                fontSize = 13.sp
+            )
+
+            Spacer(
+                modifier = Modifier.width(4.dp)
+            )
+
+            Text(
+                text = "⌄",
+                color = Color.White,
+                fontSize = 18.sp
+            )
+        }
     }
 }
 
@@ -176,25 +169,21 @@ fun ItemHistorico(nome: String) {
                 horizontal = 38.dp,
                 vertical = 9.dp
             ),
-
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         // ÍCONE DE HISTÓRICO
 
-        /*
-        Icon(
-            imageVector = Icons.Default.,
-            contentDescription = "Histórico",
-            tint = Color(0xFFE8E3ED),
+        Text(
+            text = "◷",
+            color = Color(0xFFE8E3ED),
+            fontSize = 23.sp,
             modifier = Modifier.size(23.dp)
-        )*/
-
+        )
 
         Spacer(
             modifier = Modifier.width(14.dp)
         )
-
 
         // NOME DO JOGO
 
@@ -205,8 +194,7 @@ fun ItemHistorico(nome: String) {
             modifier = Modifier.weight(1f)
         )
 
-
-        // X
+        // ÍCONE X
 
         Icon(
             imageVector = Icons.Default.Close,
