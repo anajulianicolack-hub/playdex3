@@ -1,7 +1,10 @@
 package com.example.myapplication
 
-object RotaAbas {
-    const val AbaPesquisa = "AbaPesquisa"
+object Rotas{
+    const val ABA_HOME = "home"
+    const val ABA_PESQUISA = "pesquisa"
+    const val ABA_PERFIL = "perfil"
+    const val REGISTRAR_REVIEW = "registrar_review"
+    const val TELAFAVORITOS = "favoritos"
+    const val TELACONFIGURACOES = "configuracoes"
 }
-
-
