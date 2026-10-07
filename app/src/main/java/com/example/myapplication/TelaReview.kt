@@ -1,21 +1,45 @@
 package com.example.myapplication
 
+import android.app.DatePickerDialog
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,16 +47,35 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import java.util.Calendar
+
+
+data class ReviewSalva(
+    val nomeJogo: String,
+    val status: String,
+    val data: String,
+    val nota: Int,
+    val comentario: String
+)
+
+
+object ReviewsTemporarias {
+    val reviews = mutableStateListOf<ReviewSalva>()
+}
+
 
 @Composable
-fun RegistrarReviewTela(navController: NavHostController = rememberNavController()) {
+fun TelaReview(
+    nomeJogo: String,
+    navController: NavHostController
+) {
     val context = LocalContext.current
 
     val backgroundColor = Color(0xFF13082B)
@@ -45,12 +88,25 @@ fun RegistrarReviewTela(navController: NavHostController = rememberNavController
     var reviewText by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf("") }
 
+    val calendario = Calendar.getInstance()
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _, ano, mes, dia ->
+            val diaFormatado = dia.toString().padStart(2, '0')
+            val mesFormatado = (mes + 1).toString().padStart(2, '0')
+
+            selectedDate = "$diaFormatado/$mesFormatado/$ano"
+        },
+        calendario.get(Calendar.YEAR),
+        calendario.get(Calendar.MONTH),
+        calendario.get(Calendar.DAY_OF_MONTH)
+    )
+
     Scaffold(
-        containerColor = backgroundColor,
-        bottomBar = {
-            botoesdenavegacao3(navInterno = navController)
-        }
+        containerColor = backgroundColor
     ) { innerPadding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -58,197 +114,235 @@ fun RegistrarReviewTela(navController: NavHostController = rememberNavController
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = roxoClaroHeader,
-                        shape = RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp)
-                    )
-                    .padding(vertical = 20.dp, horizontal = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Registrar Review",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Card(
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.size(100.dp, 130.dp)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.portal),
-                            contentDescription = "Portal",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(28.dp))
-
-                    Text(
-                        text = "Portal",
-                        color = Color.White,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+            HeaderReview(
+                nomeJogo = nomeJogo,
+                onBackClick = {
+                    navController.popBackStack()
                 }
-            }
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(horizontal = 24.dp)
             ) {
-                // Status
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = "Status",
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        listOf("Joguei", "Quero Jogar", "Gostei").forEach { status ->
-                            val isSelected = selectedStatus == status
-                            Button(
-                                onClick = { selectedStatus = status },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (isSelected) purpleCardColor else Color(0xFF2A1C4E)
-                                ),
-                                shape = RoundedCornerShape(20.dp),
-                                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 4.dp),
-                                modifier = Modifier.height(34.dp)
-                            ) {
-                                Text(text = status, color = Color.White, fontSize = 12.sp)
-                            }
+
+                Text(
+                    text = "Status",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listOf("Joguei", "Quero Jogar", "Gostei").forEach { status ->
+
+                        val isSelected = selectedStatus == status
+
+                        Button(
+                            onClick = {
+                                selectedStatus = status
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (isSelected) {
+                                    purpleCardColor
+                                } else {
+                                    Color(0xFF2A1C4E)
+                                }
+                            ),
+                            shape = RoundedCornerShape(20.dp),
+                            contentPadding = PaddingValues(
+                                horizontal = 14.dp,
+                                vertical = 4.dp
+                            ),
+                            modifier = Modifier.height(34.dp)
+                        ) {
+                            Text(
+                                text = status,
+                                color = Color.White,
+                                fontSize = 12.sp
+                            )
                         }
                     }
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Data
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = "Data",
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(
-                        value = selectedDate,
-                        onValueChange = { selectedDate = it },
-                        modifier = Modifier
-                            .fillMaxWidth(0.6f)
-                            .height(52.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        trailingIcon = {
+                Text(
+                    text = "Data",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(
+                    value = selectedDate,
+                    onValueChange = {},
+                    readOnly = true,
+                    placeholder = {
+                        Text(
+                            text = "Selecionar data",
+                            color = Color.White
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = {
+                                datePickerDialog.show()
+                            }
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.DateRange,
-                                contentDescription = "Data",
+                                contentDescription = "Selecionar data",
                                 tint = Color.White
                             )
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = purpleCardColor,
-                            unfocusedContainerColor = purpleCardColor,
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White
-                        )
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f)
+                        .height(56.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = purpleCardColor,
+                        unfocusedContainerColor = purpleCardColor,
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White
                     )
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Text(
+                    text = "Sua Nota",
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    for (i in 1..5) {
+                        Icon(
+                            imageVector = if (i <= rating) {
+                                Icons.Filled.Star
+                            } else {
+                                Icons.Outlined.Star
+                            },
+                            contentDescription = "Nota $i",
+                            tint = if (i <= rating) {
+                                Color(0xFFFFD700)
+                            } else {
+                                Color.White
+                            },
+                            modifier = Modifier
+                                .size(32.dp)
+                                .clickable {
+                                    rating = i
+                                }
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Nota
-                Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    verticalAlignment = Alignment.Bottom
+                ) {
                     Text(
-                        text = "Sua Nota",
+                        text = "Review ",
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        for (i in 1..5) {
-                            Icon(
-                                imageVector = if (i <= rating) Icons.Filled.Star else Icons.Outlined.Star,
-                                contentDescription = "Nota $i",
-                                tint = if (i <= rating) Color(0xFFFFD700) else Color.White,
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clickable { rating = i }
-                            )
-                        }
-                    }
-                }
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(verticalAlignment = Alignment.Bottom) {
-                        Text(
-                            text = "Review ",
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "(Opcional)",
-                            color = Color.LightGray,
-                            fontSize = 12.sp
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(
-                        value = reviewText,
-                        onValueChange = { reviewText = it },
-                        placeholder = { Text("Digite aqui...", color = Color.Gray, fontSize = 12.sp) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(140.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = darkInputColor,
-                            unfocusedContainerColor = darkInputColor,
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White
-                        )
+                    Text(
+                        text = "(Opcional)",
+                        color = Color.LightGray,
+                        fontSize = 12.sp
                     )
                 }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(
+                    value = reviewText,
+                    onValueChange = {
+                        reviewText = it
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Digite aqui...",
+                            color = Color.Gray,
+                            fontSize = 12.sp
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(140.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = darkInputColor,
+                        unfocusedContainerColor = darkInputColor,
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        cursorColor = purpleCardColor
+                    )
+                )
 
                 Spacer(modifier = Modifier.height(28.dp))
 
                 Button(
                     onClick = {
-                        Toast.makeText(context, "Review salva com sucesso!", Toast.LENGTH_SHORT).show()
-                        // Volta para o perfil ou home após salvar
-                        navController.popBackStack()
+                        if (selectedDate.isBlank()) {
+                            Toast.makeText(
+                                context,
+                                "Selecione uma data.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            val novaReview = ReviewSalva(
+                                nomeJogo = nomeJogo,
+                                status = selectedStatus,
+                                data = selectedDate,
+                                nota = rating,
+                                comentario = reviewText
+                            )
+
+                            ReviewsTemporarias.reviews.add(novaReview)
+
+                            Toast.makeText(
+                                context,
+                                "Review de $nomeJogo salva com sucesso!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            navController.popBackStack()
+                        }
                     },
                     modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
                         .fillMaxWidth(0.65f)
                         .height(48.dp),
                     shape = RoundedCornerShape(24.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = purpleCardColor)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = purpleCardColor
+                    )
                 ) {
                     Text(
                         text = "Salvar Review",
@@ -258,82 +352,131 @@ fun RegistrarReviewTela(navController: NavHostController = rememberNavController
                     )
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(30.dp))
             }
         }
     }
 }
+
 
 @Composable
-fun botoesdenavegacao3(navInterno: NavHostController) {
-    val backStackEntry by navInterno.currentBackStackEntryAsState()
-    val rotaAtual = backStackEntry?.destination?.route ?: ""
-
-    Row(
+fun HeaderReview(
+    nomeJogo: String,
+    onBackClick: () -> Unit
+) {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(65.dp)
-            .background(Color(0xFF240047))
-            .padding(horizontal = 32.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .background(
+                color = Color(0xFF240047),
+                shape = RoundedCornerShape(
+                    bottomStart = 24.dp,
+                    bottomEnd = 24.dp
+                )
+            )
+            .padding(vertical = 20.dp, horizontal = 24.dp)
     ) {
-        IconButton(
-            onClick = {
-                if (rotaAtual != RotasAbas.ABA_PESQUISA) {
-                    navInterno.navigate(RotasAbas.ABA_PESQUISA) {
-                        popUpTo(RotasAbas.ABA_HOME)
-                    }
-                }
-            }
+
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Pesquisa",
-                tint = if (rotaAtual == RotasAbas.ABA_PESQUISA) Color(0xFFA855F7) else Color.White,
-                modifier = Modifier.size(38.dp)
+            IconButton(
+                onClick = onBackClick,
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Voltar",
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+
+            Text(
+                text = "Registrar Review",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
             )
         }
 
-        IconButton(
-            onClick = {
-                if (rotaAtual != RotasAbas.ABA_HOME) {
-                    navInterno.navigate(RotasAbas.ABA_HOME) {
-                        popUpTo(RotasAbas.ABA_HOME) { inclusive = true }
-                    }
-                }
-            }
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.pladexsemfundo),
-                contentDescription = "Home",
-                modifier = Modifier.size(38.dp)
-            )
-        }
+        Spacer(modifier = Modifier.height(20.dp))
 
-        IconButton(
-            onClick = {
-                if (rotaAtual != RotasAbas.ABA_PERFIL) {
-                    navInterno.navigate(RotasAbas.ABA_PERFIL) {
-                        popUpTo(RotasAbas.ABA_HOME)
-                    }
-                }
-            }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Perfil",
-                tint = if (rotaAtual == RotasAbas.ABA_PERFIL) Color(0xFFA855F7) else Color.White,
-                modifier = Modifier.size(38.dp)
+
+            Card(
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.size(100.dp, 130.dp)
+            ) {
+                CapaReview(nomeJogo = nomeJogo)
+            }
+
+            Spacer(modifier = Modifier.width(28.dp))
+
+            Text(
+                text = nomeJogo,
+                color = Color.White,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
             )
         }
     }
 }
+
+
+@Composable
+fun CapaReview(nomeJogo: String) {
+
+    val imagem = when (nomeJogo.lowercase()) {
+        "resident evil" -> R.drawable.residentevil9
+        "baldur's gate 3" -> R.drawable.galdursgate3
+        "red dead ii" -> R.drawable.reddead2
+        "red dead redemption ii" -> R.drawable.reddead2
+        "stardew valley" -> R.drawable.stardewvalley
+        "portal" -> R.drawable.portal
+        "the witcher 3" -> R.drawable.thewitcher3
+        else -> null
+    }
+
+    if (imagem != null) {
+        Image(
+            painter = painterResource(id = imagem),
+            contentDescription = "Capa de $nomeJogo",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+    } else {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF2A1C4E)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Capa de\n$nomeJogo",
+                color = Color.White,
+                fontSize = 13.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
 fun RegistrarReviewTelaPreview() {
     MyApplicationTheme {
-        RegistrarReviewTela()
+        val navController = rememberNavController()
+
+        TelaReview(
+            nomeJogo = "Portal",
+            navController = navController
+        )
     }
 }
