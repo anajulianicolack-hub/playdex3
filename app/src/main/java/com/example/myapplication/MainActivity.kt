@@ -48,7 +48,11 @@ fun MainScreen() {
                 )
             }
             composable(RotasAbas.ABA_PESQUISA) {
-                TelaPesquisa()
+                TelaPesquisa(
+                    onBackClick = {
+                        navController.popBackStack()
+                    }
+                )
             }
             composable(RotasAbas.ABA_PERFIL) {
                 TelaPerfilUsuario(
