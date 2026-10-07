@@ -141,16 +141,6 @@ fun TelaHome() {
 }
 
 @Composable
-fun TelaPesquisa() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Tela de Pesquisa", color = Color.White, fontSize = 24.sp)
-    }
-}
-
-@Composable
 fun TelaPerfil() {
     Box(
         modifier = Modifier.fillMaxSize(),
