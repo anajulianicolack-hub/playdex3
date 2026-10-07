@@ -1,6 +1,6 @@
 package com.example.myapplication
 
-object Rotas{
+object RotasAbas{
     const val ABA_HOME = "home"
     const val ABA_PESQUISA = "pesquisa"
     const val ABA_PERFIL = "perfil"

@@ -27,6 +27,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -51,64 +52,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-object RotasAbas {
-    const val ABA_PESQUISA = "pesquisa"
-    const val ABA_HOME = "home"
-    const val ABA_PERFIL = "perfil"
-}
-
 data class GameItem(val title: String, val imageResId: Int)
-
-class Main1 : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            MyApplicationTheme {
-                MainScreen()
-            }
-        }
-    }
-}
-
 @Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    val backgroundColor = Color(0xFF13082B)
-
-    Scaffold(
-        containerColor = backgroundColor,
-        bottomBar = {
-            BottomNavBar(navInterno = navController)
-        }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = RotasAbas.ABA_HOME,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(RotasAbas.ABA_HOME) {
-                TelaHome()
-            }
-            composable(RotasAbas.ABA_PESQUISA) {
-                TelaPesquisa()
-            }
-            composable(RotasAbas.ABA_PERFIL) {
-                TelaPerfil()
-            }
-        }
-    }
-}
-
-@Composable
-fun TelaHome() {
+fun TelaHome(onNavigateToSettings: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopHeaderSection()
+        TopHeaderSection(onNavigateToSettings = onNavigateToSettings)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -137,16 +90,6 @@ fun TelaHome() {
         )
 
         Spacer(modifier = Modifier.height(20.dp))
-    }
-}
-
-@Composable
-fun TelaPerfil() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Tela de Perfil", color = Color.White, fontSize = 24.sp)
     }
 }
 
@@ -217,7 +160,7 @@ fun BottomNavBar(navInterno: NavHostController) {
 }
 
 @Composable
-fun TopHeaderSection() {
+fun TopHeaderSection(onNavigateToSettings: () -> Unit = {}) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -225,15 +168,29 @@ fun TopHeaderSection() {
             .padding(top = 16.dp, bottom = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logoplaydex),
                 contentDescription = "Logo PlayDex",
                 modifier = Modifier.height(70.dp)
             )
+
+            IconButton(
+                onClick = onNavigateToSettings,
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Configurações",
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(1.dp))
@@ -301,18 +258,10 @@ fun BannerSection() {
             modifier = Modifier.padding(top = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Box(modifier = Modifier
-                .size(8.dp)
-                .background(Color(0xFFA855F7), CircleShape))
-            Box(modifier = Modifier
-                .size(8.dp)
-                .background(Color.Gray, CircleShape))
-            Box(modifier = Modifier
-                .size(8.dp)
-                .background(Color.Gray, CircleShape))
-            Box(modifier = Modifier
-                .size(8.dp)
-                .background(Color.Gray, CircleShape))
+            Box(modifier = Modifier.size(8.dp).background(Color(0xFFA855F7), CircleShape))
+            Box(modifier = Modifier.size(8.dp).background(Color.Gray, CircleShape))
+            Box(modifier = Modifier.size(8.dp).background(Color.Gray, CircleShape))
+            Box(modifier = Modifier.size(8.dp).background(Color.Gray, CircleShape))
         }
     }
 }

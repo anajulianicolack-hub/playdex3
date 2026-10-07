@@ -177,7 +177,7 @@ fun RegistrarReviewTela(navController: NavHostController = rememberNavController
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Sua Nota
+                // Nota
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "Sua Nota",

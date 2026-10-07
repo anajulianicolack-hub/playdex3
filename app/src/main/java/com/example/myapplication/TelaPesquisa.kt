@@ -60,8 +60,6 @@ fun TelaPesquisa() {
             .verticalScroll(rememberScrollState())
     ) {
 
-        // TOPO
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -190,8 +188,6 @@ fun ItemHistorico(nome: String, onRemover: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        // ÍCONE DE HISTÓRICO
-
         Text(
             text = "◷",
             color = Color(0xFFE8E3ED),
@@ -203,16 +199,12 @@ fun ItemHistorico(nome: String, onRemover: () -> Unit) {
             modifier = Modifier.width(14.dp)
         )
 
-        // NOME DO JOGO
-
         Text(
             text = nome,
             color = Color(0xFFD8D2DF),
             fontSize = 16.sp,
             modifier = Modifier.weight(1f)
         )
-
-        // ÍCONE X
 
         Icon(
             imageVector = Icons.Default.Close,

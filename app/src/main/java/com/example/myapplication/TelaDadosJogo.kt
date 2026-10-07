@@ -55,8 +55,6 @@ fun TelaDadosJogo() {
                 .padding(horizontal = 20.dp)
         ) {
 
-            // SETA PARA VOLTAR
-
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Voltar",
@@ -67,8 +65,6 @@ fun TelaDadosJogo() {
             )
 
             Spacer(modifier = Modifier.height(18.dp))
-
-            // INFORMACOES DO JOGO E CAPA
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -105,8 +101,6 @@ fun TelaDadosJogo() {
 
                 Spacer(modifier = Modifier.width(12.dp))
 
-                // ESPACO DA CAPA DO JOGO
-
                 Box(
                     modifier = Modifier
                         .size(width = 95.dp, height = 125.dp)
@@ -124,8 +118,6 @@ fun TelaDadosJogo() {
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            // BOTAO FAZER REVIEW
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -147,8 +139,6 @@ fun TelaDadosJogo() {
             }
 
             Spacer(modifier = Modifier.height(22.dp))
-
-            // RESUMO DO JOGO
 
             Text(
                 text = "Resumo do Jogo",
@@ -172,8 +162,6 @@ fun TelaDadosJogo() {
 
             Spacer(modifier = Modifier.height(22.dp))
 
-            // DIVISORIA
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -182,8 +170,6 @@ fun TelaDadosJogo() {
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-
-            // REVIEWS POPULARES
 
             Text(
                 text = "Reviews Populares",
@@ -213,8 +199,6 @@ fun TelaDadosJogo() {
             )
 
             Spacer(modifier = Modifier.height(22.dp))
-
-            // TODAS AS REVIEWS
 
             Text(
                 text = "Todas as Reviews",
@@ -247,8 +231,6 @@ fun ItemReview(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // FOTO DE PERFIL SIMPLIFICADA
-
             Box(
                 modifier = Modifier
                     .size(35.dp)
@@ -265,8 +247,6 @@ fun ItemReview(
             }
 
             Spacer(modifier = Modifier.width(10.dp))
-
-            // NOME E COMENTARIO
 
             Column(
                 modifier = Modifier.weight(1f)
@@ -286,8 +266,6 @@ fun ItemReview(
             }
 
             Spacer(modifier = Modifier.width(4.dp))
-
-            // ESTRELAS DA AVALIACAO
 
             Text(
                 text = "★".repeat(estrelas) + "☆".repeat(5 - estrelas),
