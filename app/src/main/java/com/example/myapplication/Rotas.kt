@@ -1,7 +1,6 @@
 package com.example.myapplication
 
 object RotasAbas {
-
     const val ABA_HOME = "home"
     const val ABA_PESQUISA = "pesquisa"
     const val ABA_PERFIL = "perfil"
@@ -9,4 +8,5 @@ object RotasAbas {
     const val TELAFAVORITOS = "favoritos"
     const val TELA_DADOS_JOGO = "dadosJogo"
     const val TELAREVIEW = "telaReview"
+    const val TELA_DETALHES_FAVORITO = "detalhesFavorito"
 }

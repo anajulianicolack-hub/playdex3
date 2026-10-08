@@ -1,7 +1,7 @@
 package com.example.myapplication
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -9,23 +9,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 data class FavoritoItem(
@@ -33,49 +28,93 @@ data class FavoritoItem(
     val title: String,
     val status: String,
     val review: String,
-    val imageResId: Int,
-    var isFavorite: Boolean = true
+    val nota: Int,
+    val data: String
 )
 
 @Composable
 fun TelaFavoritos(
-    navController: NavHostController = rememberNavController(),
-    onBackClick: () -> Unit = { navController.popBackStack() }
+    onBackClick: () -> Unit = {},
+    onFavoritoClick: (FavoritoItem) -> Unit = {}
 ) {
-    val backgroundColor = Color(0xFF13082B)
+    val fundo = Color(0xFF13082B)
     val roxoHeader = Color(0xFF240047)
-    val purpleCardColor = Color(0xFF8B2FC9)
+    val roxo = Color(0xFF8B2FC9)
 
-    // Lista de exemplo
-    val listaOriginal = remember {
+    val favoritos = remember {
         mutableStateListOf(
-            FavoritoItem(1, "Resident Evil", "Joguei", "Jogo incrível com muita tensão e mistério do início ao fim.", R.drawable.residentevil9),
-            FavoritoItem(2, "Baldur's Gate 3", "Quero jogar", "Ansiosa para jogar assim que tiver tempo livre!", R.drawable.galdursgate3),
-            FavoritoItem(3, "Red Dead II", "Gostei", "História emocionante e gráficos espetaculares.", R.drawable.reddead2),
-            FavoritoItem(4, "Portal", "Joguei", "Puzzles excelentes com narrativa marcante.", R.drawable.portal)
+            FavoritoItem(
+                1, "Resident Evil", "Joguei",
+                "Jogo incrível com muita tensão e mistério.",
+                5, "05/10/2026"
+            ),
+            FavoritoItem(
+                2, "Baldur's Gate 3", "Quero jogar",
+                "Ansiosa para jogar assim que tiver tempo!",
+                4, "06/10/2026"
+            ),
+            FavoritoItem(
+                3, "Red Dead Redemption II", "Gostei",
+                "História emocionante e gráficos espetaculares.",
+                5, "07/10/2026"
+            ),
+            FavoritoItem(
+                4, "Portal", "Joguei",
+                "Puzzles excelentes e narrativa marcante.",
+                4, "08/10/2026"
+            )
         )
     }
 
     var filtroSelecionado by remember { mutableStateOf("Todos") }
-    val opcoesFiltro = listOf("Todos", "Joguei", "Quero jogar", "Gostei")
+    var adicionandoFavorito by remember { mutableStateOf(false) }
+
+    if (adicionandoFavorito) {
+        TelaAdicionarFavorito(
+            onBackClick = {
+                adicionandoFavorito = false
+            },
+            onAdicionar = { nome, status, data, nota, review ->
+                val novoId = (favoritos.maxOfOrNull { it.id } ?: 0) + 1
+
+                favoritos.add(
+                    FavoritoItem(
+                        id = novoId,
+                        title = nome,
+                        status = status,
+                        review = review,
+                        nota = nota,
+                        data = data
+                    )
+                )
+
+                filtroSelecionado = "Todos"
+                adicionandoFavorito = false
+            }
+        )
+        return
+    }
+
+    val filtros = listOf("Todos", "Joguei", "Quero jogar", "Gostei")
 
     val listaFiltrada = if (filtroSelecionado == "Todos") {
-        listaOriginal
+        favoritos.toList()
     } else {
-        listaOriginal.filter { it.status.equals(filtroSelecionado, ignoreCase = true) }
+        favoritos.filter {
+            it.status.equals(filtroSelecionado, ignoreCase = true)
+        }
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor)
+            .background(fundo)
     ) {
-        // Header Top Bar
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(roxoHeader)
-                .padding(vertical = 14.dp, horizontal = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 14.dp),
             contentAlignment = Alignment.Center
         ) {
             IconButton(
@@ -83,56 +122,68 @@ fun TelaFavoritos(
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Voltar",
                     tint = Color.White
                 )
             }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "Favoritos",
+                    "Favoritos",
                     color = Color.White,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.width(6.dp))
+
+                Spacer(Modifier.width(6.dp))
+
                 Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "Coração",
-                    tint = Color(0xFFA855F7),
-                    modifier = Modifier.size(22.dp)
+                    Icons.Default.Favorite,
+                    contentDescription = null,
+                    tint = Color(0xFFA855F7)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
 
-        // Seção de Filtros
+        Button(
+            onClick = { adicionandoFavorito = true },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .height(48.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = roxo),
+            shape = RoundedCornerShape(20.dp)
+        ) {
+            Icon(Icons.Default.Add, contentDescription = null)
+            Spacer(Modifier.width(8.dp))
+            Text("Adicionar Favorito", fontWeight = FontWeight.Bold)
+        }
+
+        Spacer(Modifier.height(18.dp))
+
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
             Text(
-                text = "Filtros",
+                "Filtros",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(Modifier.height(10.dp))
 
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                items(opcoesFiltro) { filtro ->
-                    val isSelected = filtroSelecionado == filtro
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                items(filtros) { filtro ->
                     FilterChip(
-                        selected = isSelected,
+                        selected = filtroSelecionado == filtro,
                         onClick = { filtroSelecionado = filtro },
-                        label = { Text(filtro, color = Color.White, fontSize = 13.sp) },
+                        label = {
+                            Text(filtro, color = Color.White, fontSize = 13.sp)
+                        },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = purpleCardColor,
+                            selectedContainerColor = roxo,
                             containerColor = Color(0xFF2A1C4E)
                         ),
                         shape = RoundedCornerShape(20.dp)
@@ -141,25 +192,21 @@ fun TelaFavoritos(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
 
-        // Lista de Cards dos Favoritos
         LazyColumn(
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(
+                horizontal = 20.dp,
+                vertical = 8.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(listaFiltrada) { item ->
+            items(listaFiltrada, key = { it.id }) { item ->
                 CardFavoritoItem(
                     item = item,
-                    onFavoritoToggle = {
-                        val index = listaOriginal.indexOfFirst { it.id == item.id }
-                        if (index != -1) {
-                            listaOriginal[index] = listaOriginal[index].copy(
-                                isFavorite = !listaOriginal[index].isFavorite
-                            )
-                        }
-                    }
+                    onClick = { onFavoritoClick(item) },
+                    onRemover = { favoritos.remove(item) }
                 )
             }
         }
@@ -169,97 +216,90 @@ fun TelaFavoritos(
 @Composable
 fun CardFavoritoItem(
     item: FavoritoItem,
-    onFavoritoToggle: () -> Unit
+    onClick: () -> Unit,
+    onRemover: () -> Unit
 ) {
     Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E103E)),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(140.dp)
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF1E103E)
+        )
     ) {
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
+                .fillMaxWidth()
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Capa do Jogo
-            Box(
-                modifier = Modifier
-                    .width(85.dp)
-                    .fillMaxHeight()
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color.DarkGray)
-            ) {
-                Image(
-                    painter = painterResource(id = item.imageResId),
-                    contentDescription = item.title,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
-
-            Spacer(modifier = Modifier.width(14.dp))
-
-            // Informações do Jogo
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(7.dp)
             ) {
-                Column {
-                    Text(
-                        text = item.title,
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                Text(
+                    text = item.title,
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
 
-                    Spacer(modifier = Modifier.height(6.dp))
-
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     Surface(
                         color = Color(0xFF8B2FC9),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = item.status,
+                            item.status,
                             color = Color.White,
                             fontSize = 11.sp,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 3.dp)
+                            modifier = Modifier.padding(
+                                horizontal = 10.dp,
+                                vertical = 4.dp
+                            )
                         )
                     }
+
+                    Text(
+                        item.data,
+                        color = Color.LightGray,
+                        fontSize = 11.sp
+                    )
                 }
 
-                Column {
-                    Text(
-                        text = "Review",
-                        color = Color.LightGray,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = item.review,
-                        color = Color.Gray,
-                        fontSize = 11.sp,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
+                Text(
+                    text = "★".repeat(item.nota.coerceIn(0, 5)) +
+                            "☆".repeat(5 - item.nota.coerceIn(0, 5)),
+                    color = Color(0xFFFFD700),
+                    fontSize = 16.sp
+                )
+
+                Text(
+                    "Review",
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = item.review.ifBlank { "Sem review." },
+                    color = Color.LightGray,
+                    fontSize = 12.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
 
-            IconButton(
-                onClick = onFavoritoToggle,
-                modifier = Modifier.align(Alignment.Top)
-            ) {
+            IconButton(onClick = onRemover) {
                 Icon(
-                    imageVector = if (item.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = "Favorito",
-                    tint = if (item.isFavorite) Color(0xFFA855F7) else Color.Gray,
+                    Icons.Default.Favorite,
+                    contentDescription = "Remover favorito",
+                    tint = Color(0xFFA855F7),
                     modifier = Modifier.size(26.dp)
                 )
             }
