@@ -32,7 +32,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-data class ProfileGameItem(val title: String, val imageResId: Int)
+data class ProfileGameItem(
+    val title: String,
+    val imageResId: Int
+)
 
 @Composable
 fun TelaPerfilUsuario(
@@ -47,15 +50,22 @@ fun TelaPerfilUsuario(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        // CABEÇALHO
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFF240047))
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 12.dp
+                ),
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(R.drawable.logoplaydex),
+                painter = painterResource(
+                    R.drawable.logoplaydex
+                ),
                 contentDescription = "Logo PlayDex",
                 modifier = Modifier
                     .width(130.dp)
@@ -65,7 +75,9 @@ fun TelaPerfilUsuario(
 
             IconButton(
                 onClick = onNavigateToSettings,
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier.align(
+                    Alignment.CenterEnd
+                )
             ) {
                 Icon(
                     imageVector = Icons.Default.Settings,
@@ -76,50 +88,91 @@ fun TelaPerfilUsuario(
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
 
-        ProfileHeaderSection()
+        // PERFIL
+        ProfileHeaderSection(
+            navController = navController
+        )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
 
-        // Seção Favoritos
+        // FAVORITOS
         ProfileSectionTitle(
             title = "Favoritos",
             onSeeMoreClick = onNavigateToFavorites
         )
+
         ProfileGameList(
             games = listOf(
-                ProfileGameItem("Resident Evil", R.drawable.residentevil9),
-                ProfileGameItem("Baldur's Gate 3", R.drawable.galdursgate3),
-                ProfileGameItem("Red Dead II", R.drawable.reddead2)
+                ProfileGameItem(
+                    "Resident Evil",
+                    R.drawable.residentevil9
+                ),
+                ProfileGameItem(
+                    "Baldur's Gate 3",
+                    R.drawable.galdursgate3
+                ),
+                ProfileGameItem(
+                    "Red Dead II",
+                    R.drawable.reddead2
+                )
             )
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
 
-        ProfileSectionTitle(title = "Atividade recente")
+        // ATIVIDADE RECENTE
+        ProfileSectionTitle(
+            title = "Atividade recente"
+        )
+
         ProfileGameList(
             games = listOf(
-                ProfileGameItem("Stardew Valley", R.drawable.stardewvalley),
-                ProfileGameItem("Portal", R.drawable.portal),
-                ProfileGameItem("The Witcher 3", R.drawable.thewitcher3)
+                ProfileGameItem(
+                    "Stardew Valley",
+                    R.drawable.stardewvalley
+                ),
+                ProfileGameItem(
+                    "Portal",
+                    R.drawable.portal
+                ),
+                ProfileGameItem(
+                    "The Witcher 3",
+                    R.drawable.thewitcher3
+                )
             )
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
     }
 }
 
 @Composable
-fun ProfileHeaderSection() {
+fun ProfileHeaderSection(
+    navController: NavHostController
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
+
+        // AVATAR
         Box(
             modifier = Modifier
                 .size(100.dp)
-                .background(Color(0xFF2A2040), shape = CircleShape),
+                .background(
+                    Color(0xFF2A2040),
+                    shape = CircleShape
+                ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -130,7 +183,9 @@ fun ProfileHeaderSection() {
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
 
         Text(
             text = "@noname",
@@ -139,7 +194,9 @@ fun ProfileHeaderSection() {
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(
+            modifier = Modifier.height(4.dp)
+        )
 
         Text(
             text = "Frase genérica para bio",
@@ -147,12 +204,21 @@ fun ProfileHeaderSection() {
             fontSize = 14.sp
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
 
+        // FAZER NOVA REVIEW
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.clickable { }
+            modifier = Modifier.clickable {
+
+                // VAI PARA A TELA DE PESQUISA
+                navController.navigate(
+                    RotasAbas.ABA_PESQUISA
+                )
+            }
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
@@ -160,7 +226,11 @@ fun ProfileHeaderSection() {
                 tint = Color(0xFFA855F7),
                 modifier = Modifier.size(20.dp)
             )
-            Spacer(modifier = Modifier.width(6.dp))
+
+            Spacer(
+                modifier = Modifier.width(6.dp)
+            )
+
             Text(
                 text = "Fazer nova Review",
                 color = Color(0xFFA855F7),
@@ -179,14 +249,23 @@ fun ProfileSectionTitle(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 8.dp)
+            .padding(
+                horizontal = 20.dp,
+                vertical = 8.dp
+            )
             .then(
-                if (onSeeMoreClick != null) Modifier.clickable { onSeeMoreClick() }
-                else Modifier
+                if (onSeeMoreClick != null) {
+                    Modifier.clickable {
+                        onSeeMoreClick()
+                    }
+                } else {
+                    Modifier
+                }
             ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+
         Text(
             text = title,
             color = Color.White,
@@ -195,15 +274,21 @@ fun ProfileSectionTitle(
         )
 
         if (onSeeMoreClick != null) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
                 Text(
                     text = "Ver mais",
                     color = Color(0xFFA855F7),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold
                 )
+
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    imageVector =
+                        Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = "Ver mais",
                     tint = Color(0xFFA855F7),
                     modifier = Modifier.size(20.dp)
@@ -214,30 +299,51 @@ fun ProfileSectionTitle(
 }
 
 @Composable
-fun ProfileGameList(games: List<ProfileGameItem>) {
+fun ProfileGameList(
+    games: List<ProfileGameItem>
+) {
     LazyRow(
-        contentPadding = PaddingValues(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(
+            horizontal = 20.dp
+        ),
+        horizontalArrangement =
+            Arrangement.spacedBy(16.dp)
     ) {
+
         items(games) { game ->
+
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment =
+                    Alignment.CenterHorizontally,
                 modifier = Modifier.width(110.dp)
             ) {
+
                 Box(
                     modifier = Modifier
-                        .size(110.dp, 150.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .size(
+                            width = 110.dp,
+                            height = 150.dp
+                        )
+                        .clip(
+                            RoundedCornerShape(12.dp)
+                        )
                         .background(Color.DarkGray)
                 ) {
+
                     Image(
-                        painter = painterResource(id = game.imageResId),
+                        painter = painterResource(
+                            id = game.imageResId
+                        ),
                         contentDescription = game.title,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop
                     )
                 }
-                Spacer(modifier = Modifier.height(6.dp))
+
+                Spacer(
+                    modifier = Modifier.height(6.dp)
+                )
+
                 Text(
                     text = game.title,
                     color = Color.White,

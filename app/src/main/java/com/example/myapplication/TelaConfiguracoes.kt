@@ -32,7 +32,9 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 @Composable
 fun TelaConfiguracoes(
     navController: NavHostController = rememberNavController(),
-    onBackClick: () -> Unit = { navController.popBackStack() },
+    onBackClick: () -> Unit = {
+        navController.popBackStack()
+    },
     onNavigateToFavorites: () -> Unit = {}
 ) {
     val backgroundColor = Color(0xFF13082B)
@@ -42,22 +44,31 @@ fun TelaConfiguracoes(
         modifier = Modifier
             .fillMaxSize()
             .background(backgroundColor)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .verticalScroll(
+                rememberScrollState()
+            ),
+        horizontalAlignment =
+            Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(roxoHeader)
-                .padding(vertical = 14.dp, horizontal = 16.dp),
+                .padding(
+                    vertical = 14.dp,
+                    horizontal = 16.dp
+                ),
             contentAlignment = Alignment.Center
         ) {
             IconButton(
                 onClick = onBackClick,
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier.align(
+                    Alignment.CenterStart
+                )
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    imageVector =
+                        Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Voltar",
                     tint = Color.White
                 )
@@ -71,27 +82,36 @@ fun TelaConfiguracoes(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment =
+                Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
             Box(
                 modifier = Modifier
                     .size(90.dp)
-                    .background(Color(0xFF2A2040), shape = CircleShape),
+                    .background(
+                        Color(0xFF2A2040),
+                        shape = CircleShape
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = Icons.Default.AccountCircle,
+                    imageVector =
+                        Icons.Default.AccountCircle,
                     contentDescription = "Avatar",
                     tint = Color(0xFF5A4D73),
                     modifier = Modifier.fillMaxSize()
                 )
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(
+                modifier = Modifier.height(10.dp)
+            )
 
             Text(
                 text = "@username",
@@ -101,24 +121,27 @@ fun TelaConfiguracoes(
             )
         }
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(
+            modifier = Modifier.height(30.dp)
+        )
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement =
+                Arrangement.spacedBy(12.dp)
         ) {
             ItemOpcaoConfiguracao(
                 icon = Icons.Default.Person,
                 titulo = "Informações da Conta",
-                onClick = { /* Ação futuramente */ }
+                habilitado = false
             )
 
             ItemOpcaoConfiguracao(
                 icon = Icons.Default.Notifications,
                 titulo = "Notificações",
-                onClick = { /* Ação futuramente */ }
+                habilitado = false
             )
 
             ItemOpcaoConfiguracao(
@@ -127,18 +150,23 @@ fun TelaConfiguracoes(
                 onClick = onNavigateToFavorites
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(
+                modifier = Modifier.height(20.dp)
+            )
 
             ItemOpcaoConfiguracao(
-                icon = Icons.AutoMirrored.Filled.ExitToApp,
+                icon =
+                    Icons.AutoMirrored.Filled.ExitToApp,
                 titulo = "Sair",
                 corIcone = Color(0xFFFF5555),
                 corTexto = Color(0xFFFF5555),
-                onClick = { /* Ação para deslogar */ }
+                habilitado = false
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(
+            modifier = Modifier.height(24.dp)
+        )
     }
 }
 
@@ -148,7 +176,8 @@ fun ItemOpcaoConfiguracao(
     titulo: String,
     corIcone: Color = Color(0xFFA855F7),
     corTexto: Color = Color.White,
-    onClick: () -> Unit
+    habilitado: Boolean = true,
+    onClick: () -> Unit = {}
 ) {
     Surface(
         color = Color(0xFF1E103E),
@@ -156,39 +185,65 @@ fun ItemOpcaoConfiguracao(
         modifier = Modifier
             .fillMaxWidth()
             .height(58.dp)
-            .clickable { onClick() }
+            .then(
+                if (habilitado) {
+                    Modifier.clickable {
+                        onClick()
+                    }
+                } else {
+                    Modifier
+                }
+            )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment =
+                Alignment.CenterVertically,
+            horizontalArrangement =
+                Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment =
+                    Alignment.CenterVertically
+            ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = titulo,
-                    tint = corIcone,
+                    tint = if (habilitado) {
+                        corIcone
+                    } else {
+                        Color.Gray
+                    },
                     modifier = Modifier.size(24.dp)
                 )
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(
+                    modifier = Modifier.width(16.dp)
+                )
 
                 Text(
                     text = titulo,
-                    color = corTexto,
+                    color = if (habilitado) {
+                        corTexto
+                    } else {
+                        Color.Gray
+                    },
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
             }
 
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "Avançar",
-                tint = Color.Gray,
-                modifier = Modifier.size(22.dp)
-            )
+            if (habilitado) {
+                Icon(
+                    imageVector =
+                        Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = "Avançar",
+                    tint = Color.Gray,
+                    modifier = Modifier.size(22.dp)
+                )
+            }
         }
     }
 }
