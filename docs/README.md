@@ -82,17 +82,13 @@ Clique no botão **Run ▶** para compilar e iniciar o PlayDex.
 
 ## 📄 Documentação do Projeto
 
-A documentação do PlayDex apresenta o processo de desenvolvimento, as decisões tomadas pela equipe e os registros das etapas de implementação.
+A documentação completa do projeto PlayDex encontra-se no arquivo PDF localizado nesta pasta: PLAYDEX - Documentação.docx.pdf.
 
-O documento também contém links para vídeos demonstrativos do aplicativo, hospedados no Google Drive.
+## ⚠️ Aviso Importante sobre os Vídeos
 
-📎 **[Acessar a Documentação Completa do PlayDex (PDF)](https://github.com/yaslopes07/playdex2/blob/master/docs/PLAYDEX%20-%20Documenta%C3%A7%C3%A3o.docx.pdf)**
+Como a documentação utiliza vídeos demonstrativos integrados (com links do Google Drive), recomendamos que você abra o PDF diretamente pelo Google Drive ou faça o download para visualizá-lo em um leitor de PDF compatível com links externos.
+Se aberto direto no visualizador padrão do GitHub, alguns navegadores podem bloquear a reprodução ou o redirecionamento correto dos vídeos das etapas do aplicativo.
 
-### 🎥 Aviso sobre os Vídeos
-
-Como a documentação utiliza links externos para vídeos demonstrativos, recomendamos baixar o PDF e abri-lo em um leitor compatível.
-
-O visualizador padrão do GitHub pode apresentar limitações ao abrir os links do Google Drive.
 
 ---
 
