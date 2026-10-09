@@ -82,7 +82,7 @@ Clique no botão **Run ▶** para compilar e iniciar o PlayDex.
 
 ## 📄 Documentação do Projeto
 
-A documentação completa do projeto PlayDex encontra-se no arquivo PDF localizado nesta pasta: PLAYDEX - Documentação.docx.pdf.
+A documentação completa do projeto PlayDex encontra-se no arquivo PDF localizado nesta pasta: 📎 **[PLAYDEX — Documentação Completa (PDF)](https://github.com/yaslopes07/playdex2/blob/master/docs/PLAYDEX%20-%20Documenta%C3%A7%C3%A3o.docx.pdf)**
 
 ## ⚠️ Aviso Importante sobre os Vídeos
 
