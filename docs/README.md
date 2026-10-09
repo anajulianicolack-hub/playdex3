@@ -40,33 +40,43 @@ Nesta segunda etapa, denominada **MAF (Mínimo Aplicativo Funcional)**, o foco f
 ### Pré-requisitos
 
 - Android Studio instalado.
-- Android SDK configurado.
-- Emulador Android ou dispositivo físico compatível.
-- Git instalado (para clonar o repositório).
+- Git configurado no computador.
+- Emulador Android ou dispositivo físico disponível.
+- Conexão com a internet para baixar o projeto e suas dependências.
 
 ### Passo a Passo
 
-**1. Clone o repositório:**
+**1. Abra o Android Studio**
 
-```bash
-git clone https://github.com/yaslopes07/playdex2.git
+Com o Android Studio aberto, acesse:
+
+**File → New → Project from Version Control...**
+
+**2. Clone o repositório**
+
+Na janela **Clone Repository**, selecione **Git** em *Version control*.
+
+No campo **URL**, cole o endereço do repositório:
+
+```text
+https://github.com/yaslopes07/playdex2.git
 ```
 
-**2. Abra o projeto no Android Studio:**
+No campo **Directory**, selecione a pasta onde o projeto será salvo.
 
-- Inicie o Android Studio.
-- Clique em **Open**.
-- Selecione a pasta do projeto clonado.
+Em seguida, clique em **Clone**.
 
-**3. Sincronize o Gradle:**
+**3. Abra e sincronize o projeto**
 
-Aguarde o Android Studio carregar e sincronizar as dependências do projeto.
+Aguarde o Android Studio baixar os arquivos e abrir o projeto.
 
-**4. Execute o aplicativo:**
+Espere a sincronização do **Gradle** terminar. Caso seja necessário, utilize **File → Sync Project with Gradle Files**.
 
-- Selecione um emulador Android ou conecte um dispositivo físico.
-- Clique no botão **Run ▶**.
-- Aguarde a instalação e inicialização do PlayDex.
+**4. Execute o aplicativo**
+
+Selecione um emulador Android ou conecte um dispositivo físico com a depuração USB ativada.
+
+Clique no botão **Run ▶** para compilar e iniciar o PlayDex.
 
 ---
 
