@@ -213,7 +213,8 @@ fun TelaDetalhesFavorito(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(imageVector = Icons.Default.Favorite, contentDescription = null, tint = Color(0xFFA855F7))
                         Spacer(Modifier.width(8.dp))
-                        Text(text = "Favoritado", color = Color.White)
+                        Text(text = "FavoritadoA" +
+                                "", color = Color.White)
                     }
 
                     HorizontalDivider(color = Color(0xFF35234F))
@@ -232,7 +233,7 @@ fun TelaDetalhesFavorito(
                         color = Color(0xFFFFD700), fontSize = 28.sp
                     )
 
-                    Text(text = "Minha Review", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "Minha review", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     Surface(modifier = Modifier.fillMaxWidth(), color = Color(0xFF1E103E), shape = RoundedCornerShape(16.dp)) {
                         Text(
                             text = review.ifBlank { "Nenhuma review foi escrita." },
