@@ -24,14 +24,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-data class FavoritoItem(
-    val id: Int,
-    val title: String,
-    val status: String,
-    val review: String,
-    val nota: Int,
-    val data: String
-)
 
 @Composable
 fun TelaFavoritos(
@@ -161,7 +153,7 @@ fun TelaFavoritos(
 
 @Composable
 fun CardFavoritoItem(
-    item: FavoritoItem,
+    item: ItemFavorito,
     onClick: () -> Unit,
     onRemover: () -> Unit
 ) {

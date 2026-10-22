@@ -26,3 +26,36 @@ suspend fun deletarPesquisa(item: ItemPesquisa, pesquisaDao: PesquisaDAO) {
         Log.e("Erro ao deletar", "Msg: ${e.message}")
     }
 }
+
+suspend fun inserirFavorito(item: ItemFavorito, favoritoDao: FavoritoDao) {
+    try {
+        favoritoDao.inserir(item)
+    } catch (e: Exception) {
+        Log.e("Erro ao adicionar favorito", "Msg: ${e.message}")
+    }
+}
+
+suspend fun buscarFavoritos(favoritoDao: FavoritoDao): List<ItemFavorito> {
+    try {
+        return favoritoDao.buscarFavoritos()
+    } catch (e: Exception) {
+        Log.e("Erro ao buscar favoritos", "Msg: ${e.message}")
+        return emptyList()
+    }
+}
+
+suspend fun atualizarFavorito(item: ItemFavorito, favoritoDao: FavoritoDao) {
+    try {
+        favoritoDao.atualizarFavorito(item)
+    } catch (e: Exception) {
+        Log.e("Erro ao atualizar favorito", "Msg: ${e.message}")
+    }
+}
+
+suspend fun deletarFavorito(item: ItemFavorito, favoritoDao: FavoritoDao) {
+    try {
+        favoritoDao.removerFavorito(item)
+    } catch (e: Exception) {
+        Log.e("Erro ao deletar favorito", "Msg: ${e.message}")
+    }
+}

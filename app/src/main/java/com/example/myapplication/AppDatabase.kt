@@ -5,9 +5,11 @@ import androidx.room3.Database
 import androidx.room3.Room
 import androidx.room3.RoomDatabase
 
-@Database(entities = [ItemPesquisa::class], version = 1)
+@Database(entities = [ItemPesquisa::class, ItemFavorito::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
+
     abstract fun pesquisaDao(): PesquisaDAO
+    abstract fun favoritoDao(): FavoritoDao // <-- Adicionado o DAO de favoritos
 
     companion object {
         @Volatile
