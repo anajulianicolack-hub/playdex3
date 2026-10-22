@@ -24,11 +24,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +33,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 data class PesquisaItem(
     val id: Int,
@@ -46,22 +42,10 @@ data class PesquisaItem(
 
 @Composable
 fun TelaPesquisa(
+    viewModel: PesquisaViewModel = viewModel(),
     onJogoClick: (String) -> Unit = {},
     onBackClick: () -> Unit = {}
 ) {
-    var textoPesquisa by remember {
-        mutableStateOf("")
-    }
-
-    val historico = remember {
-        mutableStateListOf(
-            PesquisaItem(1, "Stardew Valley"),
-            PesquisaItem(2, "Cuphead"),
-            PesquisaItem(3, "Deltarune"),
-            PesquisaItem(4, "GTA VI")
-        )
-    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -113,9 +97,9 @@ fun TelaPesquisa(
                 )
 
                 BasicTextField(
-                    value = textoPesquisa,
+                    value = viewModel.textoPesquisa,
                     onValueChange = {
-                        textoPesquisa = it
+                        viewModel.atualizarTexto(it)
                     },
                     singleLine = true,
                     textStyle = TextStyle(
@@ -124,7 +108,7 @@ fun TelaPesquisa(
                     ),
                     modifier = Modifier.fillMaxWidth(),
                     decorationBox = { campoTexto ->
-                        if (textoPesquisa.isEmpty()) {
+                        if (viewModel.textoPesquisa.isEmpty()) {
                             Text(
                                 text = "Pesquisar...",
                                 color = Color(0xFFB8B0C4),
@@ -146,29 +130,7 @@ fun TelaPesquisa(
                 color = Color(0xFFB83CFF),
                 fontSize = 12.sp,
                 modifier = Modifier.clickable {
-                    val pesquisaTrim = textoPesquisa.trim()
-
-                    if (pesquisaTrim.isNotEmpty()) {
-                        historico.removeAll {
-                            it.nome.equals(
-                                pesquisaTrim,
-                                ignoreCase = true
-                            )
-                        }
-
-                        val novoId =
-                            (historico.maxOfOrNull { it.id } ?: 0) + 1
-
-                        historico.add(
-                            0,
-                            PesquisaItem(
-                                id = novoId,
-                                nome = pesquisaTrim
-                            )
-                        )
-
-                        textoPesquisa = ""
-                    }
+                    viewModel.adicionarPesquisa()
                 }
             )
         }
@@ -181,7 +143,7 @@ fun TelaPesquisa(
             modifier = Modifier.fillMaxSize()
         ) {
             items(
-                items = historico,
+                items = viewModel.historico,
                 key = { jogo -> jogo.id }
             ) { jogo ->
                 ItemHistorico(
@@ -190,7 +152,7 @@ fun TelaPesquisa(
                         onJogoClick(jogo.nome)
                     },
                     onRemover = {
-                        historico.remove(jogo)
+                        viewModel.removerItem(jogo)
                     }
                 )
             }
@@ -206,7 +168,7 @@ fun TelaPesquisa(
 
 @Composable
 fun ItemHistorico(
-    item: PesquisaItem,
+    item: ItemPesquisa,
     onClick: () -> Unit,
     onRemover: () -> Unit
 ) {
