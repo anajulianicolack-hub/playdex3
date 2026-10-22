@@ -21,7 +21,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 data class FavoritoItem(
@@ -36,23 +35,59 @@ data class FavoritoItem(
 @Composable
 fun TelaFavoritos(
     onBackClick: () -> Unit = {},
-    onFavoritoClick: (FavoritoItem) -> Unit = {},
-    viewModel: FavoritosViewModel = viewModel()
+    onFavoritoClick: (FavoritoItem) -> Unit = {}
 ) {
     val fundo = Color(0xFF13082B)
     val roxoHeader = Color(0xFF240047)
     val roxo = Color(0xFF8B2FC9)
 
-    val favoritos = viewModel.favoritos
+    val favoritos = remember {
+        mutableStateListOf(
+            FavoritoItem(
+                1, "Resident Evil", "Joguei",
+                "Jogo incrível com muita tensão e mistério.",
+                5, "05/10/2026"
+            ),
+            FavoritoItem(
+                2, "Baldur's Gate 3", "Quero jogar",
+                "Ansiosa para jogar assim que tiver tempo!",
+                4, "06/10/2026"
+            ),
+            FavoritoItem(
+                3, "Red Dead Redemption II", "Gostei",
+                "História emocionante e gráficos espetaculares.",
+                5, "07/10/2026"
+            ),
+            FavoritoItem(
+                4, "Portal", "Joguei",
+                "Puzzles excelentes e narrativa marcante.",
+                4, "08/10/2026"
+            )
+        )
+    }
 
     var filtroSelecionado by remember { mutableStateOf("Todos") }
     var adicionandoFavorito by remember { mutableStateOf(false) }
 
     if (adicionandoFavorito) {
         TelaAdicionarFavorito(
-            onBackClick = { adicionandoFavorito = false },
+            onBackClick = {
+                adicionandoFavorito = false
+            },
             onAdicionar = { nome, status, data, nota, review ->
-                viewModel.adicionar(nome, status, data, nota, review)
+                val novoId = (favoritos.maxOfOrNull { it.id } ?: 0) + 1
+
+                favoritos.add(
+                    FavoritoItem(
+                        id = novoId,
+                        title = nome,
+                        status = status,
+                        review = review,
+                        nota = nota,
+                        data = data
+                    )
+                )
+
                 filtroSelecionado = "Todos"
                 adicionandoFavorito = false
             }
@@ -171,7 +206,7 @@ fun TelaFavoritos(
                 CardFavoritoItem(
                     item = item,
                     onClick = { onFavoritoClick(item) },
-                    onRemover = { viewModel.remover(item) }
+                    onRemover = { favoritos.remove(item) }
                 )
             }
         }
