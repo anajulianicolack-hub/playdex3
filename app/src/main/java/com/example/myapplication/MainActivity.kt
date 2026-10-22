@@ -127,60 +127,9 @@ fun MainScreen() {
                 )
             }
 
+            // Agora a TelaFavoritos cuida dos detalhes sozinha!
             composable(RotasAbas.TELAFAVORITOS) {
                 TelaFavoritos(
-                    onBackClick = {
-                        navController.popBackStack()
-                    },
-                    onFavoritoClick = { favorito ->
-                        navController.navigate(
-                            "${RotasAbas.TELA_DETALHES_FAVORITO}" +
-                                    "?nome=${Uri.encode(favorito.title)}" +
-                                    "&status=${Uri.encode(favorito.status)}" +
-                                    "&nota=${favorito.nota}" +
-                                    "&data=${Uri.encode(favorito.data)}" +
-                                    "&review=${Uri.encode(favorito.review)}"
-                        )
-                    }
-                )
-            }
-
-            composable(
-                route = "${RotasAbas.TELA_DETALHES_FAVORITO}" +
-                        "?nome={nome}&status={status}&nota={nota}" +
-                        "&data={data}&review={review}",
-                arguments = listOf(
-                    navArgument("nome") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    },
-                    navArgument("status") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    },
-                    navArgument("nota") {
-                        type = NavType.IntType
-                        defaultValue = 0
-                    },
-                    navArgument("data") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    },
-                    navArgument("review") {
-                        type = NavType.StringType
-                        defaultValue = ""
-                    }
-                )
-            ) { backStackEntry ->
-
-                val argumentos = backStackEntry.arguments
-
-                TelaDetalhesFavorito(
-                    nomeJogo = argumentos?.getString("nome") ?: "",
-                    status = argumentos?.getString("status") ?: "",
-                    nota = argumentos?.getInt("nota") ?: 0,
-                    data = argumentos?.getString("data") ?: "",
-                    review = argumentos?.getString("review") ?: "",
                     onBackClick = {
                         navController.popBackStack()
                     }
