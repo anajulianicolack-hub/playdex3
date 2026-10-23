@@ -48,7 +48,7 @@ fun TelaFavoritos(
             nota = itemAtual.nota,
             data = itemAtual.data,
             review = itemAtual.review,
-            onBackClick = { viewModel.selecionarFavorito(null) },
+            onBackClick = { viewModel.selecionarFavoritoPorId(null) }, // Alterado para a nova função
             onSalvar = { novoNome, novoStatus, novaNota, novaData, novaReview ->
                 viewModel.atualizar(itemAtual, novoNome, novoStatus, novaNota, novaData, novaReview)
             }
@@ -145,7 +145,7 @@ fun TelaFavoritos(
             items(listaFiltrada, key = { it.id }) { item ->
                 CardFavoritoItem(
                     item = item,
-                    onClick = { viewModel.selecionarFavorito(item) },
+                    onClick = { viewModel.selecionarFavoritoPorId(item.id) },
                     onRemover = { viewModel.remover(item) }
                 )
             }

@@ -9,16 +9,16 @@ import androidx.room3.Update
 @Dao
 interface FavoritoDao {
     @Insert
-    fun inserir(favorito: ItemFavorito)
+    suspend fun inserir(favorito: ItemFavorito)
 
     @Query("SELECT * FROM tabela_favoritos ORDER BY id DESC")
-    fun buscarFavoritos(): List<ItemFavorito>
+    suspend fun buscarFavoritos(): List<ItemFavorito>
 
     @Query("SELECT * FROM tabela_favoritos WHERE id = :id")
-    fun buscarPorId(id: Int): ItemFavorito?
+    suspend fun buscarPorId(id: Int): ItemFavorito?
     @Update
-    fun atualizarFavorito(favorito: ItemFavorito)
+    suspend fun atualizarFavorito(favorito: ItemFavorito)
 
     @Delete
-    fun removerFavorito(favorito: ItemFavorito)
+    suspend fun removerFavorito(favorito: ItemFavorito)
 }

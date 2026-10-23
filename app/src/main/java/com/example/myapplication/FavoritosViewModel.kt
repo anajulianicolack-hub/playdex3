@@ -50,8 +50,18 @@ class FavoritosViewModel(application: Application) : AndroidViewModel(applicatio
         adicionandoFavorito = false
     }
 
-    fun selecionarFavorito(item: ItemFavorito?) {
-        favoritoSelecionado = item
+    fun selecionarFavoritoPorId(id: Int?) {
+        if (id == null) {
+            favoritoSelecionado = null
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val itemDoBanco = favoritoDao.buscarPorId(id)
+            withContext(Dispatchers.Main) {
+                favoritoSelecionado = itemDoBanco
+            }
+        }
     }
 
     fun adicionar(nome: String, status: String, data: String, nota: Int, review: String) {
