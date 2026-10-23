@@ -97,4 +97,17 @@ class FavoritosViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
+
+    var resultadoBuscaId by mutableStateOf<ItemFavorito?>(null)
+        private set
+
+    fun buscarFavoritoPorId(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val resultado = favoritoDao.buscarPorId(id)
+            withContext(Dispatchers.Main) {
+                resultadoBuscaId = resultado
+            }
+        }
+    }
+
 }

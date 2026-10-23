@@ -30,7 +30,9 @@ import java.util.Calendar
 @Composable
 fun TelaAdicionarFavorito(
     onBackClick: () -> Unit,
-    onAdicionar: (String, String, String, Int, String) -> Unit
+    onAdicionar: (String, String, String, Int, String) -> Unit,
+    onBuscarId: (Int) -> Unit = {},
+    resultadoBusca: ItemFavorito? = null
 ) {
     val context = LocalContext.current
     val fundo = Color(0xFF13082B)
@@ -42,6 +44,7 @@ fun TelaAdicionarFavorito(
     var data by remember { mutableStateOf("") }
     var nota by remember { mutableIntStateOf(0) }
     var review by remember { mutableStateOf("") }
+    var idBusca by remember { mutableStateOf("") }
 
     val calendario = Calendar.getInstance()
 
@@ -93,6 +96,56 @@ fun TelaAdicionarFavorito(
             modifier = Modifier.padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            Text("Buscar por ID", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = idBusca,
+                    onValueChange = { idBusca = it },
+                    placeholder = { Text("Ex: 1") },
+                    singleLine = true,
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = campo,
+                        unfocusedContainerColor = campo,
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        focusedBorderColor = roxo
+                    )
+                )
+
+                Button(
+                    onClick = {
+                        val id = idBusca.toIntOrNull()
+                        if (id != null) onBuscarId(id) else Toast.makeText(context, "Digite um ID válido", Toast.LENGTH_SHORT).show()
+                    },
+                    modifier = Modifier.height(56.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = roxo),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Text("Buscar", fontWeight = FontWeight.Bold)
+                }
+            }
+
+
+            if (resultadoBusca != null) {
+                Surface(
+                    color = Color(0xFF2A1C4E),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                ) {
+                    Text(
+                        text = "Encontrado: ${resultadoBusca.title} (Status: ${resultadoBusca.status})",
+                        color = Color.White,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(16.dp))
+
             Text(
                 "Nome do jogo",
                 color = Color.White,

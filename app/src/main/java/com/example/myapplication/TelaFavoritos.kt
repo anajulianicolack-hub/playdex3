@@ -61,7 +61,9 @@ fun TelaFavoritos(
             onBackClick = { viewModel.fecharAdicionar() },
             onAdicionar = { nome, status, data, nota, review ->
                 viewModel.adicionar(nome, status, data, nota, review)
-            }
+            },
+            onBuscarId = { id -> viewModel.buscarFavoritoPorId(id) },
+            resultadoBusca = viewModel.resultadoBuscaId
         )
         return
     }

@@ -14,6 +14,8 @@ interface FavoritoDao {
     @Query("SELECT * FROM tabela_favoritos ORDER BY id DESC")
     fun buscarFavoritos(): List<ItemFavorito>
 
+    @Query("SELECT * FROM tabela_favoritos WHERE id = :id")
+    fun buscarPorId(id: Int): ItemFavorito?
     @Update
     fun atualizarFavorito(favorito: ItemFavorito)
 
