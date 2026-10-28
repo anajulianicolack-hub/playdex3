@@ -61,7 +61,7 @@ Na janela **Clone Repository**, selecione **Git** em *Version control*.
 No campo **URL**, cole o endereço do repositório:
 
 ```text
-[https://github.com/yaslopes07/playdex2.git](https://github.com/yaslopes07/playdex2.git)
+https://github.com/anajulianicolack-hub/playdex3.git
 ```
 
 No campo **Directory**, selecione a pasta onde o projeto será salvo.
