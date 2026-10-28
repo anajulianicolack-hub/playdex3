@@ -8,11 +8,9 @@ O **PlayDex** é uma plataforma desenvolvida para centralizar a biblioteca de jo
 
 ## 📌 Sobre o Projeto
 
-Este projeto foi desenvolvido como parte da disciplina de **Desenvolvimento de Aplicativos Móveis (Android)**.
+Este projeto foi desenvolvido como parte da disciplina de **Desenvolvimento de Aplicativos Móveis (Android)** da Universidade Positivo.
 
 O objetivo principal é criar uma solução intuitiva que ajude a organizar o histórico de jogos e incentive a comunidade gamer a compartilhar experiências.
-
-Nesta segunda etapa, denominada **MAF (Mínimo Aplicativo Funcional)**, o foco foi implementar a navegação entre telas, listas dinâmicas, formulários de cadastro e telas de detalhes, tornando o aplicativo interativo e funcional.
 
 ### 🎯 Público-Alvo
 
@@ -24,13 +22,16 @@ Nesta segunda etapa, denominada **MAF (Mínimo Aplicativo Funcional)**, o foco f
 
 ## ✨ Principais Funcionalidades
 
-- 📚 **Gerenciamento de Favoritos:** adicione e remova jogos da sua lista, registrando status, data, nota e review.
-- ⭐ **Avaliações e Reviews:** atribua notas em estrelas, selecione datas e escreva resenhas sobre os jogos.
-- 🔎 **Pesquisa de Jogos:** pesquise títulos, consulte o histórico e remova pesquisas anteriores.
+- 📚 **Gerenciamento de Favoritos:** adicione, edite e remova jogos da sua lista, registrando status, data, nota e review de forma persistente.
+- ⭐ **Avaliações e Reviews:** atribua notas em estrelas, selecione datas e escreva resenhas sobre os jogos salvas no banco de dados local.
+- 🗄️ **Persistência Local (Room / SQLite):** Seus dados salvos (favoritos, avaliações e histórico) ficam seguros na memória interna do dispositivo, garantindo que nada seja perdido ao fechar o app.
+- 🧠 **Gerenciamento de Estado (`AndroidViewModel`):** Arquitetura MVVM implementada para desacoplar a lógica e reter os dados perante eventos de ciclo de vida (como a rotação da tela).
+- ⚡ **Processamento Assíncrono (Coroutines):** Operações de I/O executadas em segundo plano (`Dispatchers.IO`) integradas com segurança à thread principal (`Dispatchers.Main`).
+- 🔎 **Pesquisa de Jogos e Histórico Reativo:** pesquise títulos, consulte o histórico ordenado cronologicamente (`ORDER BY id DESC`) e remova pesquisas anteriores.
 - 🎮 **Detalhes dos Jogos:** visualize informações como nome, desenvolvedor, gênero e resumo.
 - ❤️ **Detalhes dos Favoritos:** consulte individualmente os jogos adicionados, com suas informações e avaliações.
 - 👤 **Perfil do Usuário:** acesse o perfil, as configurações e a lista de favoritos.
-- 🧭 **Navegação Funcional:** navegue entre as telas utilizando a barra inferior e os botões de navegação.
+- 🧭 **Navegação Funcional e Arquitetura MVVM:** navegue entre as telas utilizando a barra inferior e componentes reativos gerenciados por `AndroidViewModel` e Coroutines.
 - 🎯 **Descoberta de Jogos:** explore jogos populares e sugestões exibidas na página inicial.
 
 ---
@@ -59,8 +60,7 @@ Na janela **Clone Repository**, selecione **Git** em *Version control*.
 No campo **URL**, cole o endereço do repositório:
 
 ```text
-https://github.com/yaslopes07/playdex2.git
-```
+[https://github.com/yaslopes07/playdex2.git](https://github.com/yaslopes07/playdex2.git)
 
 No campo **Directory**, selecione a pasta onde o projeto será salvo.
 
