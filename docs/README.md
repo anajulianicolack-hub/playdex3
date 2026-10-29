@@ -96,8 +96,9 @@ Se aberto direto no visualizador padrão do GitHub, alguns navegadores podem blo
 
 ## 👥 Equipe de Desenvolvimento
 
-- **Ana Julia Nicolack**
-- **Yasmin da Rocha Lopes**
+- **[Ana Júlia Nicolack](https://github.com/anajulianicolack-hub)**
+
+- **[Yasmin da Rocha Lopes](https://github.com/yaslopes07)**
 
 
 ---
